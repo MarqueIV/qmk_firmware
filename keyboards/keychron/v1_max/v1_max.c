@@ -80,6 +80,10 @@ bool keychron_task_kb(void) {
 
 #ifdef LK_WIRELESS_ENABLE
 bool lpm_is_kb_idle(void) {
+#ifdef FACTORY_TEST_ENABLE
     return power_on_indicator_timer_buffer == 0 && !factory_reset_indicating();
+#else
+    return power_on_indicator_timer_buffer == 0;
+#endif
 }
 #endif

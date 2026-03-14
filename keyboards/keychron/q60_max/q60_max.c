@@ -56,6 +56,10 @@ void keyboard_post_init_kb(void) {
 
 #ifdef LK_WIRELESS_ENABLE
 bool lpm_is_kb_idle(void) {
+#ifdef FACTORY_TEST_ENABLE
     return !factory_reset_indicating();
+#else
+    return true;
+#endif
 }
 #endif

@@ -55,16 +55,24 @@ void keyboard_post_init_kb(void) {
 }
 
 bool keychron_task_kb(void) {
+#ifdef FACTORY_TEST_ENABLE
     if (factory_reset_indicating()) {
         writePin(LED_CAPS_LOCK_PIN, !LED_PIN_ON_STATE);
-    } else {
-        if (host_keyboard_led_state().caps_lock) writePin(LED_CAPS_LOCK_PIN, LED_PIN_ON_STATE);
+    } else if (host_keyboard_led_state().caps_lock) {
+        writePin(LED_CAPS_LOCK_PIN, LED_PIN_ON_STATE);
     }
+#else
+    if (host_keyboard_led_state().caps_lock) writePin(LED_CAPS_LOCK_PIN, LED_PIN_ON_STATE);
+#endif
     return true;
 }
 
 #ifdef LK_WIRELESS_ENABLE
 bool lpm_is_kb_idle(void) {
+#ifdef FACTORY_TEST_ENABLE
     return !factory_reset_indicating();
+#else
+    return true;
+#endif
 }
 #endif
